@@ -17,5 +17,8 @@ extension CommonExtensions on BuildContext {
   TextStyle get widgetBodyBold =>
       TextStyle(fontSize: 12, fontWeight: FontWeight.bold);
 
-  int get iconSize => 50;
+  double? get iconSize => 50;
+
+  EdgeInsets get cardPadding =>
+      const EdgeInsets.symmetric(vertical: 12, horizontal: 16);
 }
