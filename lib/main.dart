@@ -1,14 +1,8 @@
-// Copyright 2017 The Chromium Authors. All rights reserved.
-// Use of this source code is governed by a BSD-style license that can be
-// found in the LICENSE file.
-
-// ignore_for_file: public_member_api_docs
-
 import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:mot_app/model/accelerometer_sensor.dart';
+import 'package:mot_app/view/accelerometer_widget.dart';
 import 'package:sensors_plus/sensors_plus.dart';
 
 void main() {
@@ -21,7 +15,6 @@ void main() {
   // Add error handler for Flutter framework errors
   FlutterError.onError = (FlutterErrorDetails details) {
     FlutterError.presentError(details);
-    // You can add custom error logging here if needed
   };
 
   runApp(const MyApp());
@@ -56,28 +49,17 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   static const Duration _ignoreDuration = Duration(milliseconds: 20);
 
-  UserAccelerometerEvent? _userAccelerometerEvent;
+  // gyroscope sensor parameters
   GyroscopeEvent? _gyroscopeEvent;
-  MagnetometerEvent? _magnetometerEvent;
-  BarometerEvent? _barometerEvent;
-
-  DateTime? _userAccelerometerUpdateTime;
   DateTime? _gyroscopeUpdateTime;
-  DateTime? _magnetometerUpdateTime;
-  DateTime? _barometerUpdateTime;
-
-  int? _userAccelerometerLastInterval;
   int? _gyroscopeLastInterval;
-  int? _magnetometerLastInterval;
-  int? _barometerLastInterval;
-
-  final _streamSubscriptions = <StreamSubscription<dynamic>>[];
   bool _disposed = false;
-
   Duration sensorInterval = SensorInterval.normalInterval;
 
   // Use late with nullable to avoid initialization issues
-  late AccelerometerSensor? _accelerometerSensor;
+  late AccelerometerSensor _accelerometerSensor;
+
+  final _streamSubscriptions = <StreamSubscription<dynamic>>[];
 
   @override
   void initState() {
@@ -91,6 +73,7 @@ class _MyHomePageState extends State<MyHomePage> {
       sensorId: 59190,
       samplingPeriod: sensorInterval,
     );
+    _streamSubscriptions.add(_accelerometerSensor.getStream());
   }
 
   void _updateSensors() {
@@ -111,31 +94,6 @@ class _MyHomePageState extends State<MyHomePage> {
 
   void _initSensorStreams() {
     if (_disposed) return;
-
-    // Set up user accelerometer stream
-    _streamSubscriptions.add(
-      userAccelerometerEventStream(samplingPeriod: sensorInterval).listen(
-        (UserAccelerometerEvent event) {
-          if (_disposed) return;
-
-          final now = event.timestamp;
-          if (mounted) {
-            setState(() {
-              _userAccelerometerEvent = event;
-              if (_userAccelerometerUpdateTime != null) {
-                final interval = now.difference(_userAccelerometerUpdateTime!);
-                if (interval > _ignoreDuration) {
-                  _userAccelerometerLastInterval = interval.inMilliseconds;
-                }
-              }
-              _userAccelerometerUpdateTime = now;
-            });
-          }
-        },
-        onError: _handleSensorError('User Accelerometer'),
-        cancelOnError: false,
-      ),
-    );
 
     // Set up gyroscope stream
     _streamSubscriptions.add(
@@ -158,56 +116,6 @@ class _MyHomePageState extends State<MyHomePage> {
           }
         },
         onError: _handleSensorError('Gyroscope'),
-        cancelOnError: false,
-      ),
-    );
-
-    // Set up magnetometer stream
-    _streamSubscriptions.add(
-      magnetometerEventStream(samplingPeriod: sensorInterval).listen(
-        (MagnetometerEvent event) {
-          if (_disposed) return;
-
-          final now = event.timestamp;
-          if (mounted) {
-            setState(() {
-              _magnetometerEvent = event;
-              if (_magnetometerUpdateTime != null) {
-                final interval = now.difference(_magnetometerUpdateTime!);
-                if (interval > _ignoreDuration) {
-                  _magnetometerLastInterval = interval.inMilliseconds;
-                }
-              }
-              _magnetometerUpdateTime = now;
-            });
-          }
-        },
-        onError: _handleSensorError('Magnetometer'),
-        cancelOnError: false,
-      ),
-    );
-
-    // Set up barometer stream
-    _streamSubscriptions.add(
-      barometerEventStream(samplingPeriod: sensorInterval).listen(
-        (BarometerEvent event) {
-          if (_disposed) return;
-
-          final now = event.timestamp;
-          if (mounted) {
-            setState(() {
-              _barometerEvent = event;
-              if (_barometerUpdateTime != null) {
-                final interval = now.difference(_barometerUpdateTime!);
-                if (interval > _ignoreDuration) {
-                  _barometerLastInterval = interval.inMilliseconds;
-                }
-              }
-              _barometerUpdateTime = now;
-            });
-          }
-        },
-        onError: _handleSensorError('Barometer'),
         cancelOnError: false,
       ),
     );
@@ -238,7 +146,7 @@ class _MyHomePageState extends State<MyHomePage> {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
               // Use the widget from our accelerometer sensor
-              _accelerometerSensor?.widget ?? const SizedBox.shrink(),
+              AccelerometerWidget(sensor: _accelerometerSensor),
 
               // Rest of the sensor data display
               Padding(
@@ -257,35 +165,6 @@ class _MyHomePageState extends State<MyHomePage> {
                     4: FlexColumnWidth(2),
                   },
                   children: [
-                    const TableRow(
-                      children: [
-                        SizedBox.shrink(),
-                        Text('X'),
-                        Text('Y'),
-                        Text('Z'),
-                        Text('Interval'),
-                      ],
-                    ),
-                    TableRow(
-                      children: [
-                        const Padding(
-                          padding: EdgeInsets.symmetric(vertical: 8.0),
-                          child: Text('UserAccelerometer'),
-                        ),
-                        Text(
-                          _userAccelerometerEvent?.x.toStringAsFixed(1) ?? '?',
-                        ),
-                        Text(
-                          _userAccelerometerEvent?.y.toStringAsFixed(1) ?? '?',
-                        ),
-                        Text(
-                          _userAccelerometerEvent?.z.toStringAsFixed(1) ?? '?',
-                        ),
-                        Text(
-                          '${_userAccelerometerLastInterval?.toString() ?? '?'} ms',
-                        ),
-                      ],
-                    ),
                     TableRow(
                       children: [
                         const Padding(
@@ -298,56 +177,10 @@ class _MyHomePageState extends State<MyHomePage> {
                         Text('${_gyroscopeLastInterval?.toString() ?? '?'} ms'),
                       ],
                     ),
-                    TableRow(
-                      children: [
-                        const Padding(
-                          padding: EdgeInsets.symmetric(vertical: 8.0),
-                          child: Text('Magnetometer'),
-                        ),
-                        Text(_magnetometerEvent?.x.toStringAsFixed(1) ?? '?'),
-                        Text(_magnetometerEvent?.y.toStringAsFixed(1) ?? '?'),
-                        Text(_magnetometerEvent?.z.toStringAsFixed(1) ?? '?'),
-                        Text(
-                          '${_magnetometerLastInterval?.toString() ?? '?'} ms',
-                        ),
-                      ],
-                    ),
                   ],
                 ),
               ),
-              // Barometer section
-              if (_barometerEvent != null)
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(20.0, 0.0, 20.0, 20.0),
-                  child: Table(
-                    columnWidths: const {
-                      0: FlexColumnWidth(4),
-                      1: FlexColumnWidth(3),
-                      2: FlexColumnWidth(2),
-                    },
-                    children: [
-                      const TableRow(
-                        children: [
-                          SizedBox.shrink(),
-                          Text('Pressure'),
-                          Text('Interval'),
-                        ],
-                      ),
-                      TableRow(
-                        children: [
-                          const Padding(
-                            padding: EdgeInsets.symmetric(vertical: 8.0),
-                            child: Text('Barometer'),
-                          ),
-                          Text(
-                            '${_barometerEvent?.pressure.toStringAsFixed(1) ?? '?'} hPa',
-                          ),
-                          Text('${_barometerLastInterval?.toString() ?? '?'} ms'),
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
+
               Padding(
                 padding: const EdgeInsets.all(16.0),
                 child: Column(
@@ -402,32 +235,6 @@ class _MyHomePageState extends State<MyHomePage> {
             ],
           ),
         ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          // Update sensor sampling period
-          setState(() {
-            sensorInterval = sensorInterval == SensorInterval.normalInterval
-                ? SensorInterval.gameInterval
-                : SensorInterval.normalInterval;
-
-            _updateSensors();
-
-            // Display a message about the change
-            if (mounted) {
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content: Text(
-                    'Sampling period updated to ${sensorInterval.inMilliseconds}ms',
-                  ),
-                  duration: const Duration(seconds: 2),
-                ),
-              );
-            }
-          });
-        },
-        tooltip: 'Adjust Sampling Rate',
-        child: const Icon(Icons.settings),
       ),
     );
   }
