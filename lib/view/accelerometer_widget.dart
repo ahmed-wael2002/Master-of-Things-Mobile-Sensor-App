@@ -2,27 +2,36 @@ import 'package:flutter/material.dart';
 import 'package:icons_plus/icons_plus.dart';
 import 'package:mot_app/common/style.extension.dart';
 import 'package:mot_app/model/accelerometer_sensor.dart';
+import 'package:mot_app/view/accelerometer_bottom_sheet.dart';
 
 class AccelerometerWidget extends StatefulWidget {
   final AccelerometerSensor sensor;
 
-  const AccelerometerWidget({
-    super.key,
-    required this.sensor
-  });
+  const AccelerometerWidget({super.key, required this.sensor});
 
   @override
   State<AccelerometerWidget> createState() => _AccelerometerWidgetState();
 }
 
 class _AccelerometerWidgetState extends State<AccelerometerWidget> {
+  void _showEditSensorBottomSheet() {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      builder: (context) => AccelerometerBottomSheet(sensor: widget.sensor),
+    ).then((_) {
+      // Refresh the widget when bottom sheet is closed
+      if (mounted) setState(() {});
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Card(
-      margin: const EdgeInsets.all(8),
-      elevation: 2,
-      child: MouseRegion(
-        cursor: SystemMouseCursors.basic,
+    return InkWell(
+      onTap: _showEditSensorBottomSheet,
+      child: Card(
+        margin: const EdgeInsets.all(8),
+        elevation: 2,
         child: Container(
           width: double.infinity,
           padding: context.cardPadding,
@@ -61,7 +70,8 @@ class _AccelerometerWidgetState extends State<AccelerometerWidget> {
                           context,
                         ),
                         _buildInterval(
-                          widget.sensor.samplingPeriod.inMilliseconds.toDouble(),
+                          widget.sensor.samplingPeriod.inMilliseconds
+                              .toDouble(),
                           context,
                         ),
                       ],
@@ -96,6 +106,4 @@ class _AccelerometerWidgetState extends State<AccelerometerWidget> {
       ],
     );
   }
-
-
 }

@@ -1,21 +1,21 @@
 import 'dart:async';
-
 import 'package:mot_app/model/Sensor.dart';
 import 'package:mot_app/model/http_service.dart';
 import 'package:sensors_plus/sensors_plus.dart';
 
 class AccelerometerSensor extends Sensor {
+  // Attributes
   AccelerometerEvent? accelerometerEvent;
   int captureTime = 0;
 
+  // Constructor
   AccelerometerSensor({
     super.sensorId = 59190,
     super.samplingPeriod = const Duration(milliseconds: 200),
-  }) : super(
-         name: 'Accelerometer',
-       );
+  }) : super(name: 'Accelerometer');
 
-  // Method to get the latest accelerometer data
+
+  // Method to return the getStream for streamSubscriptions in the main.dart
   StreamSubscription<AccelerometerEvent> getStream() {
     return accelerometerEventStream(samplingPeriod: samplingPeriod).listen((
       AccelerometerEvent event,
@@ -23,9 +23,10 @@ class AccelerometerSensor extends Sensor {
       accelerometerEvent = event;
       captureTime += 10;
       _postReadings();
-    });
+    }, cancelOnError: true);
   }
 
+  // function to post readings to given sensor
   Future<String> _postReadings() async {
     try {
       final data = {
@@ -45,7 +46,6 @@ class AccelerometerSensor extends Sensor {
 
       final response = HttpService().postRequest(data);
       return response.toString();
-      
     } catch (e) {
       return e.toString();
     }

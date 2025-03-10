@@ -1,7 +1,6 @@
-
 abstract class Sensor {
   final String name;
-  final int sensorId;
+  int sensorId;
   final Duration samplingPeriod;
 
   Sensor({
@@ -18,5 +17,9 @@ abstract class Sensor {
   }) {
     // This will be implemented when we have more sensor types
     return null;
+  }
+
+  void updateSensorId(int sensorId) {
+    this.sensorId = sensorId;
   }
 }
