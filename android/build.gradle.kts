@@ -25,6 +25,16 @@ subprojects {
 }
 
 subprojects {
+    project.plugins.withId("com.android.application") {
+        project.extensions.configure<com.android.build.gradle.AppExtension> {
+            ndkVersion = "21.4.7075529"  // Use a stable NDK version
+        }
+    }
+    project.plugins.withId("com.android.library") {
+        project.extensions.configure<com.android.build.gradle.LibraryExtension> {
+            ndkVersion = "21.4.7075529"  // Use a stable NDK version
+        }
+    }
     project.evaluationDependsOn(":app")
 }
 

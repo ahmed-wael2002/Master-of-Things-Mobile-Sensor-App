@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:icons_plus/icons_plus.dart';
 import 'package:mot_app/model/Sensor.dart';
 import 'package:mot_app/model/http_service.dart';
 import 'package:sensors_plus/sensors_plus.dart';
@@ -12,10 +13,15 @@ class AccelerometerSensor extends Sensor {
   AccelerometerSensor({
     super.sensorId = 59190,
     super.samplingPeriod = const Duration(milliseconds: 200),
-  }) : super(name: 'Accelerometer');
-
+  }) : super(
+         name: 'Accelerometer',
+         icon:
+             LineAwesome
+                 .arrows_alt_solid, // Use a standard Flutter icon that definitely exists
+       );
 
   // Method to return the getStream for streamSubscriptions in the main.dart
+  @override
   StreamSubscription<AccelerometerEvent> getStream() {
     return accelerometerEventStream(samplingPeriod: samplingPeriod).listen((
       AccelerometerEvent event,

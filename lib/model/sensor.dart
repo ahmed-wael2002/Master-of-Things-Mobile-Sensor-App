@@ -1,13 +1,21 @@
+import 'dart:async';
+import 'package:flutter/material.dart';
+
 abstract class Sensor {
   final String name;
   int sensorId;
   final Duration samplingPeriod;
+  final IconData icon; // Changed from Icon to IconData
 
   Sensor({
     required this.name,
     required this.sensorId,
     required this.samplingPeriod,
+    required this.icon,
   });
+
+  // Abstract method to be implemented by all sensor types
+  StreamSubscription<dynamic> getStream();
 
   // Factory method to create a sensor by type
   static Sensor? createSensor(
