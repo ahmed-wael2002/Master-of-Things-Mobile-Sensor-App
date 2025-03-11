@@ -13,11 +13,9 @@ class AccelerometerSensor extends Sensor {
     super.sensorId = 59190,
     super.samplingPeriod = const Duration(milliseconds: 200),
   }) : super(
-         name: 'Accelerometer',
-         icon:
-             LineAwesome
-                 .arrows_alt_solid, // Use a standard Flutter icon that definitely exists
-       );
+    name: 'Accelerometer',
+    icon:LineAwesome.arrows_alt_solid,
+  );
 
   // Method to return the getStream for streamSubscriptions in the main.dart
   @override

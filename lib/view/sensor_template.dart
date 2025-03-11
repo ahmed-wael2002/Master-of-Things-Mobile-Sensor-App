@@ -14,7 +14,7 @@ abstract class SensorWidgetTemplateState<T extends SensorWidgetTemplate>
   // Abstract methods to be implemented by concrete sensor widgets
   Widget buildReadingsWidget(BuildContext context);
   Widget buildBottomSheet(BuildContext context);
-  IconData getSensorIcon();
+  IconData getSensorIcon() => widget.sensor.icon;
 
   void _showEditSensorBottomSheet() {
     showModalBottomSheet(

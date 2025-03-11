@@ -1,52 +1,38 @@
 import 'package:flutter/material.dart';
 import 'package:mot_app/common/style.extension.dart';
-import 'package:mot_app/model/accelerometer_sensor.dart';
-import 'package:mot_app/view/accelerometer/accelerometer_bottom_sheet.dart';
+import 'package:mot_app/model/gyroscope_sensor.dart';
+import 'package:mot_app/view/gyroscope/gyroscope_bottom_sheet.dart';
 import 'package:mot_app/view/sensor_template.dart';
 
-class AccelerometerWidget extends SensorWidgetTemplate {
+class GyroscopeWidget extends SensorWidgetTemplate {
   @override
-  final AccelerometerSensor sensor;
-
-  const AccelerometerWidget({super.key, required this.sensor})
+  // ignore: overridden_fields
+  final GyroscopeSensor sensor;
+  const GyroscopeWidget({super.key, required this.sensor})
     : super(sensor: sensor);
 
   @override
-  State<AccelerometerWidget> createState() => _AccelerometerWidgetState();
+  State<GyroscopeWidget> createState() => _GyroscopeWidgetState();
 }
 
-class _AccelerometerWidgetState extends SensorWidgetTemplateState<AccelerometerWidget> {
+class _GyroscopeWidgetState extends SensorWidgetTemplateState<GyroscopeWidget> {
+
   @override
   Widget buildReadingsWidget(BuildContext context) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        _buildAxisDisplay(
-          'X',
-          widget.sensor.accelerometerEvent?.x ?? 0,
-          context,
-        ),
-        _buildAxisDisplay(
-          'Y',
-          widget.sensor.accelerometerEvent?.y ?? 0,
-          context,
-        ),
-        _buildAxisDisplay(
-          'Z',
-          widget.sensor.accelerometerEvent?.z ?? 0,
-          context,
-        ),
-        _buildInterval(
-          widget.sensor.samplingPeriod.inMilliseconds.toDouble(),
-          context,
-        ),
+        _buildAxisDisplay("X", widget.sensor.gyroscopeEvent?.x ?? 0, context),
+        _buildAxisDisplay("Y", widget.sensor.gyroscopeEvent?.y ?? 0, context),
+        _buildAxisDisplay("Z", widget.sensor.gyroscopeEvent?.z ?? 0, context),
+        _buildInterval(widget.sensor.samplingPeriod.inMilliseconds.toDouble(), context)
       ],
     );
   }
 
   @override
   Widget buildBottomSheet(BuildContext context) {
-    return AccelerometerBottomSheet(sensor: widget.sensor);
+    return GyroscopeBottomSheet(sensor: widget.sensor);
   }
 
 
