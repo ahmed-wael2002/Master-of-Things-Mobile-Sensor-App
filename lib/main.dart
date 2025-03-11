@@ -2,7 +2,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:mot_app/model/accelerometer_sensor.dart';
-import 'package:mot_app/view/accelerometer_widget.dart';
+import 'package:mot_app/view/accelerometer/accelerometer_widget.dart';
 import 'package:sensors_plus/sensors_plus.dart';
 
 void main() {

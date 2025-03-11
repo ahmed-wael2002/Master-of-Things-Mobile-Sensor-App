@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:icons_plus/icons_plus.dart';
 import 'package:mot_app/common/style.extension.dart';
 import 'package:mot_app/model/accelerometer_sensor.dart';
-import 'package:mot_app/view/accelerometer_bottom_sheet.dart';
+import 'package:mot_app/view/accelerometer/accelerometer_bottom_sheet.dart';
 import 'package:mot_app/view/sensor_template.dart';
 
-class AccelerometerWidget extends SensorTemplate {
+class AccelerometerWidget extends SensorWidgetTemplate {
   final AccelerometerSensor sensor;
 
   const AccelerometerWidget({super.key, required this.sensor})
@@ -16,7 +16,7 @@ class AccelerometerWidget extends SensorTemplate {
 }
 
 class _AccelerometerWidgetState
-    extends SensorTemplateState<AccelerometerWidget> {
+    extends SensorWidgetTemplateState<AccelerometerWidget> {
   @override
   Widget buildReadingsWidget(BuildContext context) {
     return Row(
