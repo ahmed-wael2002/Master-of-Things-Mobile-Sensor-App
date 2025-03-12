@@ -1,8 +1,8 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:mot_app/data/http_service.dart';
 import 'package:mot_app/model/accelerometer_sensor.dart';
 import 'package:mot_app/model/gyroscope_sensor.dart';
-import 'package:mot_app/model/http_service.dart';
 
 abstract class Sensor {
   int sensorId;
