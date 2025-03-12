@@ -8,6 +8,7 @@ class AccelerometerSensor extends Sensor {
   AccelerometerEvent? accelerometerEvent;
   int captureTime = 0;
 
+
   // Constructor
   AccelerometerSensor({
     super.sensorId = 59190,

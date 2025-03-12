@@ -44,6 +44,19 @@ class _MyHomePageState extends State<MyHomePage> {
     _streamSubscriptions.add(_accelerometerSensor.getStream());
     // Add gyroscope stream - don't use setState in the stream callbacks
     _streamSubscriptions.add(_gyroscopeSensor.getStream());
+
+     // Set up a periodic timer to refresh the UI instead
+    Timer.periodic(const Duration(milliseconds: 100), (timer) {
+      if (_disposed) {
+        timer.cancel();
+        return;
+      }
+      if (mounted) {
+        setState(() {
+          // This empty setState will trigger a rebuild with latest sensor values
+        });
+      }
+    });
   }
 
   void _updateSensors() {
