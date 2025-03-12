@@ -1,19 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:mot_app/common/style.extension.dart';
-import 'package:mot_app/model/accelerometer_sensor.dart';
+import 'package:mot_app/model/Sensor.dart';
 
-class AccelerometerBottomSheet extends StatefulWidget {
-  final AccelerometerSensor sensor;
+class UpdateSensorIdBottomSheet extends StatefulWidget {
+  final Sensor sensor;
 
-  const AccelerometerBottomSheet({super.key, required this.sensor});
+  const UpdateSensorIdBottomSheet({super.key, required this.sensor});
 
   @override
-  State<AccelerometerBottomSheet> createState() =>
-      _AccelerometerBottomSheetState();
+  State<UpdateSensorIdBottomSheet> createState() =>
+      _UpdateSensorIdBottomSheetState();
 }
 
-class _AccelerometerBottomSheetState extends State<AccelerometerBottomSheet> {
+class _UpdateSensorIdBottomSheetState extends State<UpdateSensorIdBottomSheet> {
   late TextEditingController _sensorIdController;
   String? _errorText;
 
@@ -65,7 +65,7 @@ class _AccelerometerBottomSheetState extends State<AccelerometerBottomSheet> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            'Accelerometer Sensor ID: ${widget.sensor.sensorId}',
+            'Sensor ID: ${widget.sensor.sensorId}',
             style: context.widgetTitle,
           ),
           const SizedBox(height: 16),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mot_app/common/style.extension.dart';
 import 'package:mot_app/model/Sensor.dart';
+import 'package:mot_app/view/update_sensor_id_bottomsheet.dart';
 
 /// A template class for sensor widgets using the Template Design Pattern
 abstract class SensorWidgetTemplate extends StatefulWidget {
@@ -13,8 +14,11 @@ abstract class SensorWidgetTemplateState<T extends SensorWidgetTemplate>
     extends State<T> {
   // Abstract methods to be implemented by concrete sensor widgets
   Widget buildReadingsWidget(BuildContext context);
-  Widget buildBottomSheet(BuildContext context);
   IconData getSensorIcon() => widget.sensor.icon;
+
+  Widget buildBottomSheet(BuildContext context) {
+    return UpdateSensorIdBottomSheet(sensor: widget.sensor);
+  }
 
   void _showEditSensorBottomSheet() {
     showModalBottomSheet(

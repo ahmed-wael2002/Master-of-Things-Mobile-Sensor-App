@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:mot_app/model/accelerometer_sensor.dart';
 import 'package:mot_app/model/gyroscope_sensor.dart';
 import 'package:mot_app/model/light_sensor.dart';
@@ -69,7 +70,6 @@ class _MyHomePageState extends State<MyHomePage> {
 
   void _updateSensors() {
     if (_disposed) return;
-
     // Cancel existing subscriptions
     for (final subscription in _streamSubscriptions) {
       subscription.cancel();
@@ -79,7 +79,6 @@ class _MyHomePageState extends State<MyHomePage> {
     // Update sensor sampling periods
     _accelerometerSensor.samplingPeriod = sensorInterval;
     _gyroscopeSensor.samplingPeriod = sensorInterval;
-
     // Reinitialize sensor streams with new interval
     _initSensorStreams();
   }
@@ -91,75 +90,28 @@ class _MyHomePageState extends State<MyHomePage> {
         title: Text(widget.title ?? 'Sensors Dashboard'),
         elevation: 4,
       ),
-      body: MouseRegion(
-        // Fix mouse pointer issues by adding proper mouse region
-        cursor: SystemMouseCursors.basic,
-        child: SingleChildScrollView(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: <Widget>[
-              // Use the widget from our accelerometer sensor
-              AccelerometerWidget(sensor: _accelerometerSensor),
-              // Gyroscope widget
-              GyroscopeWidget(sensor: _gyroscopeSensor),
-              // Light Sensor widget
-              LightWidget(sensor: _lightLuxSensor),
-
-              Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    const Text('Update Interval:'),
-                    const SizedBox(height: 8),
-                    SegmentedButton<Duration>(
-                      segments: [
-                        ButtonSegment(
-                          value: SensorInterval.gameInterval,
-                          label: Text(
-                            'Game\n'
-                            '(${SensorInterval.gameInterval.inMilliseconds}ms)',
-                          ),
-                        ),
-                        ButtonSegment(
-                          value: SensorInterval.uiInterval,
-                          label: Text(
-                            'UI\n'
-                            '(${SensorInterval.uiInterval.inMilliseconds}ms)',
-                          ),
-                        ),
-                        ButtonSegment(
-                          value: SensorInterval.normalInterval,
-                          label: Text(
-                            'Normal\n'
-                            '(${SensorInterval.normalInterval.inMilliseconds}ms)',
-                          ),
-                        ),
-                        const ButtonSegment(
-                          value: Duration(milliseconds: 500),
-                          label: Text('500ms'),
-                        ),
-                        const ButtonSegment(
-                          value: Duration(seconds: 1),
-                          label: Text('1s'),
-                        ),
-                      ],
-                      selected: {sensorInterval},
-                      showSelectedIcon: false,
-                      onSelectionChanged: (value) {
-                        setState(() {
-                          sensorInterval = value.first;
-                          _updateSensors();
-                        });
-                      },
-                    ),
-                  ],
-                ),
+      body: Column(
+        children: [
+          Expanded(
+            child: SingleChildScrollView(
+              scrollDirection: Axis.vertical,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: <Widget>[
+                  // Use the widget from our accelerometer sensor
+                  AccelerometerWidget(sensor: _accelerometerSensor),
+                  // Gyroscope widget
+                  GyroscopeWidget(sensor: _gyroscopeSensor),
+                  // Light Sensor widget
+                  LightWidget(sensor: _lightLuxSensor),
+                ],
               ),
-            ],
+            ),
           ),
-        ),
+
+          _buildButtonSegment(),
+        ],
       ),
     );
   }
@@ -173,5 +125,59 @@ class _MyHomePageState extends State<MyHomePage> {
     }
     _streamSubscriptions.clear();
     super.dispose();
+  }
+
+  _buildButtonSegment() {
+    return Padding(
+      padding: const EdgeInsets.all(16.0),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          const Text('Update Interval:'),
+          const SizedBox(height: 8),
+          SegmentedButton<Duration>(
+            segments: [
+              ButtonSegment(
+                value: SensorInterval.gameInterval,
+                label: Text(
+                  'Game\n'
+                  '(${SensorInterval.gameInterval.inMilliseconds}ms)',
+                ),
+              ),
+              ButtonSegment(
+                value: SensorInterval.uiInterval,
+                label: Text(
+                  'UI\n'
+                  '(${SensorInterval.uiInterval.inMilliseconds}ms)',
+                ),
+              ),
+              ButtonSegment(
+                value: SensorInterval.normalInterval,
+                label: Text(
+                  'Normal\n'
+                  '(${SensorInterval.normalInterval.inMilliseconds}ms)',
+                ),
+              ),
+              const ButtonSegment(
+                value: Duration(milliseconds: 500),
+                label: Text('500ms'),
+              ),
+              const ButtonSegment(
+                value: Duration(seconds: 1),
+                label: Text('1s'),
+              ),
+            ],
+            selected: {sensorInterval},
+            showSelectedIcon: false,
+            onSelectionChanged: (value) {
+              setState(() {
+                sensorInterval = value.first;
+                _updateSensors();
+              });
+            },
+          ),
+        ],
+      ),
+    );
   }
 }

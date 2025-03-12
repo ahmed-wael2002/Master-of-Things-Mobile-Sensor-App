@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:mot_app/common/style.extension.dart';
 import 'package:mot_app/model/light_sensor.dart';
 import 'package:mot_app/view/sensor_template.dart';
+import 'package:mot_app/view/update_sensor_id_bottomsheet.dart';
 
 class LightWidget extends SensorWidgetTemplate {
   @override
@@ -17,7 +18,7 @@ class _LightWidgetState extends SensorWidgetTemplateState<LightWidget> {
   @override
   Widget buildBottomSheet(BuildContext context) {
     // return AccelerometerBottomSheet(sensor: );
-    return const FlutterLogo();
+    return UpdateSensorIdBottomSheet(sensor: widget.sensor,);
   }
 
   @override

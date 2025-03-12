@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mot_app/common/style.extension.dart';
 import 'package:mot_app/model/accelerometer_sensor.dart';
-import 'package:mot_app/view/accelerometer/accelerometer_bottom_sheet.dart';
 import 'package:mot_app/view/sensor_template.dart';
 
 class AccelerometerWidget extends SensorWidgetTemplate {
@@ -15,7 +14,8 @@ class AccelerometerWidget extends SensorWidgetTemplate {
   State<AccelerometerWidget> createState() => _AccelerometerWidgetState();
 }
 
-class _AccelerometerWidgetState extends SensorWidgetTemplateState<AccelerometerWidget> {
+class _AccelerometerWidgetState
+    extends SensorWidgetTemplateState<AccelerometerWidget> {
   @override
   Widget buildReadingsWidget(BuildContext context) {
     return Row(
@@ -42,11 +42,6 @@ class _AccelerometerWidgetState extends SensorWidgetTemplateState<AccelerometerW
         ),
       ],
     );
-  }
-
-  @override
-  Widget buildBottomSheet(BuildContext context) {
-    return AccelerometerBottomSheet(sensor: widget.sensor);
   }
 
 

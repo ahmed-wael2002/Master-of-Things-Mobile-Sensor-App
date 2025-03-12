@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mot_app/common/style.extension.dart';
 import 'package:mot_app/model/gyroscope_sensor.dart';
-import 'package:mot_app/view/gyroscope/gyroscope_bottom_sheet.dart';
 import 'package:mot_app/view/sensor_template.dart';
 
 class GyroscopeWidget extends SensorWidgetTemplate {
@@ -29,12 +28,6 @@ class _GyroscopeWidgetState extends SensorWidgetTemplateState<GyroscopeWidget> {
       ],
     );
   }
-
-  @override
-  Widget buildBottomSheet(BuildContext context) {
-    return GyroscopeBottomSheet(sensor: widget.sensor);
-  }
-
 
   Widget _buildAxisDisplay(String axis, double value, BuildContext context) {
     return Row(
