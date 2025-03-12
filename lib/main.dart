@@ -26,7 +26,7 @@ class MyApp extends StatelessWidget {
       title: 'Sensors Demo',
       theme: ThemeData(
         useMaterial3: true,
-        colorSchemeSeed: const Color(0x9f4376f8),
+        colorSchemeSeed: Colors.lightBlueAccent,
       ),
       home: const MyHomePage(title: 'Sensors Dashboard'),
       debugShowCheckedModeBanner: false,

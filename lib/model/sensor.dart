@@ -31,7 +31,6 @@ abstract class Sensor {
     try {
       final data = getData();
       HttpService().postRequest(data);
-      // return response.data;
     } 
     catch (e) {
       debugPrint('Error posting readings: $e');

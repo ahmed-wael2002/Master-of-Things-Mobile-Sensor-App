@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:flutter/material.dart';
 import 'package:icons_plus/icons_plus.dart';
 import 'package:mot_app/model/Sensor.dart'; // Fixed import path to match actual file name case
 import 'package:sensors_plus/sensors_plus.dart';
@@ -10,10 +11,7 @@ class GyroscopeSensor extends Sensor {
   GyroscopeSensor({
     super.sensorId = 59191,
     super.samplingPeriod = const Duration(milliseconds: 200),
-  }) : super(
-    name: 'Gyroscope', 
-    icon: LineAwesome.sync_solid
-  );
+  }) : super(name: 'Gyroscope', icon: LineAwesome.sync_solid);
 
   @override
   StreamSubscription<GyroscopeEvent> getStream() {
@@ -24,7 +22,7 @@ class GyroscopeSensor extends Sensor {
       captureTime += 10;
       // Handle the Future properly
       postReadings().then((_) {}).catchError((error) {
-        print('Error posting gyroscope readings: $error');
+        debugPrint('Error posting gyroscope readings: $error');
       });
     }, cancelOnError: true);
   }

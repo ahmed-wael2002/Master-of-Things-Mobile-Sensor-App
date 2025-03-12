@@ -38,6 +38,7 @@ dependencies:
   snake: ^0.1.0
   dio: ^5.8.0+1
   icons_plus: ^5.0.0
+  light_sensor: ^3.0.1
 
 dev_dependencies:
   flutter_test:

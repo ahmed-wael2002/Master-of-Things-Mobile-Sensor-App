@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:flutter/material.dart';
 import 'package:icons_plus/icons_plus.dart';
 import 'package:mot_app/model/Sensor.dart';
 import 'package:sensors_plus/sensors_plus.dart';
@@ -8,15 +9,11 @@ class AccelerometerSensor extends Sensor {
   AccelerometerEvent? accelerometerEvent;
   int captureTime = 0;
 
-
   // Constructor
   AccelerometerSensor({
     super.sensorId = 59190,
     super.samplingPeriod = const Duration(milliseconds: 200),
-  }) : super(
-    name: 'Accelerometer',
-    icon:LineAwesome.arrows_alt_solid,
-  );
+  }) : super(name: 'Accelerometer', icon: LineAwesome.arrows_alt_solid);
 
   // Method to return the getStream for streamSubscriptions in the main.dart
   @override
@@ -29,7 +26,7 @@ class AccelerometerSensor extends Sensor {
       // Handle the Future properly or comment out if not needed
       // Use unawaited or simply don't await as this is in a callback
       postReadings().then((_) {}).catchError((error) {
-        print('Error posting readings: $error');
+        debugPrint('Error posting readings: $error');
       });
     }, cancelOnError: true);
   }

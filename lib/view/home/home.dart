@@ -2,8 +2,10 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:mot_app/model/accelerometer_sensor.dart';
 import 'package:mot_app/model/gyroscope_sensor.dart';
+import 'package:mot_app/model/light_sensor.dart';
 import 'package:mot_app/view/accelerometer/accelerometer_widget.dart';
 import 'package:mot_app/view/gyroscope/gyroscope_widget.dart';
+import 'package:mot_app/view/light/lightsensor_widget.dart';
 import 'package:sensors_plus/sensors_plus.dart';
 
 class MyHomePage extends StatefulWidget {
@@ -15,7 +17,6 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-
   bool _disposed = false;
   Duration sensorInterval = SensorInterval.normalInterval;
 
@@ -24,9 +25,14 @@ class _MyHomePageState extends State<MyHomePage> {
     sensorId: 59190,
     samplingPeriod: SensorInterval.normalInterval,
   );
-  
+
   final GyroscopeSensor _gyroscopeSensor = GyroscopeSensor(
     sensorId: 59191,
+    samplingPeriod: SensorInterval.normalInterval,
+  );
+
+  final LightLuxSensor _lightLuxSensor = LightLuxSensor(
+    sensorId: 59204,
     samplingPeriod: SensorInterval.normalInterval,
   );
 
@@ -44,8 +50,10 @@ class _MyHomePageState extends State<MyHomePage> {
     _streamSubscriptions.add(_accelerometerSensor.getStream());
     // Add gyroscope stream - don't use setState in the stream callbacks
     _streamSubscriptions.add(_gyroscopeSensor.getStream());
+    // Add lightsensor stream
+    _streamSubscriptions.add(_lightLuxSensor.getStream());
 
-     // Set up a periodic timer to refresh the UI instead
+    // Set up a periodic timer to refresh the UI instead
     Timer.periodic(const Duration(milliseconds: 100), (timer) {
       if (_disposed) {
         timer.cancel();
@@ -76,7 +84,6 @@ class _MyHomePageState extends State<MyHomePage> {
     _initSensorStreams();
   }
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -94,9 +101,10 @@ class _MyHomePageState extends State<MyHomePage> {
             children: <Widget>[
               // Use the widget from our accelerometer sensor
               AccelerometerWidget(sensor: _accelerometerSensor),
-              
               // Gyroscope widget
               GyroscopeWidget(sensor: _gyroscopeSensor),
+              // Light Sensor widget
+              LightWidget(sensor: _lightLuxSensor),
 
               Padding(
                 padding: const EdgeInsets.all(16.0),
