@@ -1,7 +1,5 @@
 import 'dart:async';
-import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
 import 'package:mot_app/model/accelerometer_sensor.dart';
 import 'package:mot_app/model/gyroscope_sensor.dart';
 import 'package:mot_app/model/http_service.dart';
@@ -31,19 +29,12 @@ abstract class Sensor {
   // Common method to post readings to a server
   Future<void> postReadings() async {
     try {
-      final response = await http.post(
-        Uri.parse('https://yourapi.com/readings'),
-        headers: <String, String>{
-          'Content-Type': 'application/json; charset=UTF-8',
-        },
-        body: jsonEncode(getData()),
-      );
-
-      if (response.statusCode != 200) {
-        print('Failed to post readings: ${response.statusCode}');
-      }
-    } catch (e) {
-      print('Error posting readings: $e');
+      final data = getData();
+      HttpService().postRequest(data);
+      // return response.data;
+    } 
+    catch (e) {
+      debugPrint('Error posting readings: $e');
     }
   }
 
