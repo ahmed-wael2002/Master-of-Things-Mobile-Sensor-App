@@ -1,4 +1,4 @@
-package com.example.mot_app
+package com.wael.mot
 
 import io.flutter.embedding.android.FlutterActivity
 
