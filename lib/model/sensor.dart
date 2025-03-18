@@ -49,12 +49,12 @@ abstract class Sensor {
         sensor = AccelerometerSensor(
           sensorId: sensorId ?? 59190,
           samplingPeriod: samplingPeriod ?? const Duration(milliseconds: 200),
-        ); // Remove unnecessary cast
+        ) as Sensor?; // Remove unnecessary cast
       case 'gyroscope':
         sensor = GyroscopeSensor(
           sensorId: sensorId ?? 59191,
           samplingPeriod: samplingPeriod ?? const Duration(milliseconds: 200),
-        ); // Remove unnecessary cast and fix ID
+        ) as Sensor?; // Remove unnecessary cast and fix ID
       default:
         sensor = null;
     }
