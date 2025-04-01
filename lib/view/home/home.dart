@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:mot_app/model/accelerometer_sensor.dart';
 import 'package:mot_app/model/gyroscope_sensor.dart';
 import 'package:mot_app/model/light_sensor.dart';

@@ -7,7 +7,8 @@ plugins {
 
 android {
     namespace = "com.wael.mot"
-    compileSdk = flutter.compileSdkVersion
+    // compileSdk = flutter.compileSdkVersion
+    compileSdkVersion = 35
     ndkVersion = flutter.ndkVersion
 
     compileOptions {

@@ -1,0 +1,2 @@
+D:/College/Semester 10/IOT/MoT Flutter App/mot_app/android/app/.cxx/Debug/24xjvt5t/x86/CMakeFiles/edit_cache.dir
+D:/College/Semester 10/IOT/MoT Flutter App/mot_app/android/app/.cxx/Debug/24xjvt5t/x86/CMakeFiles/rebuild_cache.dir
