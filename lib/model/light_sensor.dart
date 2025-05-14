@@ -38,18 +38,12 @@ class LightLuxSensor extends Sensor {
   @override
   StreamSubscription<int> getStream() {
     return LightSensor.luxStream().listen((lux) {
-      // print('============= Lux: $lux');
       _currentLuxValue = lux;
       _captureTime += 10;
 
-      // Post readings and notify UI
-      postReadings()
-          .then((_) {
-            debugPrint('Readings posted successfully');
-          })
-          .catchError((error) {
-            debugPrint('Error posting readings: $error');
-          });
+      postReadings(context).catchError((error) {
+        throw error;
+      });
     }, cancelOnError: true);
   }
 }

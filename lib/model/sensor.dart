@@ -27,13 +27,18 @@ abstract class Sensor {
   Map<String, dynamic> getData();
 
   // Common method to post readings to a server
-  Future<void> postReadings() async {
+  Future<void> postReadings(BuildContext context) async {
     try {
       final data = getData();
-      HttpService().postRequest(data);
-    } 
-    catch (e) {
-      debugPrint('Error posting readings: $e');
+      await HttpService().postRequest(data);
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Error posting readings: $e'),
+          backgroundColor: Colors.red,
+        ),
+      );
+      throw e;
     }
   }
 

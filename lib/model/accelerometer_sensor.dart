@@ -23,10 +23,8 @@ class AccelerometerSensor extends Sensor {
     ) {
       accelerometerEvent = event;
       captureTime += 10;
-      // Handle the Future properly or comment out if not needed
-      // Use unawaited or simply don't await as this is in a callback
-      postReadings().then((_) {}).catchError((error) {
-        debugPrint('Error posting readings: $error');
+      postReadings(context).catchError((error) {
+        throw error;
       });
     }, cancelOnError: true);
   }
