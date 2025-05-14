@@ -26,7 +26,8 @@ class MyApp extends StatelessWidget {
       title: 'Sensors Demo',
       theme: ThemeData(
         useMaterial3: true,
-        colorSchemeSeed: Colors.lightBlueAccent,
+        // TODO: Abstract theme file in separate file
+        colorSchemeSeed: Colors.blue,
       ),
       home: const MyHomePage(title: 'Sensors Dashboard'),
       debugShowCheckedModeBanner: false,
